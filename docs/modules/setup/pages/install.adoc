@@ -71,7 +71,7 @@ kubectl apply -f docs/modules/setup/examples/k8s/
 healthy pod sample output will looks like
 
 [shell]
-...
+....
 kubectl get pod
 NAME                          READY   STATUS    RESTARTS   AGE
 blockdiag-7bd6c989b7-zhvj8    1/1     Running   0          24s
@@ -79,7 +79,7 @@ bpmn-6cfccf9bc4-6w4px         1/1     Running   0          24s
 excalidraw-5b84995fcb-dh57t   1/1     Running   0          24s
 kroki-6b49bcb7c4-x2ksc        1/1     Running   0          23s
 mermaid-7bff5c9959-hkrxx      1/1     Running   0          22s
-...
+....
 
 To test the installation is successful
 
