@@ -59,36 +59,29 @@ Finally, to start a container in detached mode, you use `-d` option:
 [source,docker-cli]
 docker run -p8080:8000 -d yuzutech/kroki
 
-== Using docker-compose
-
-==== to install
-
-[shell]
-....
-cd docs/modules/setup/examples/
-docker-compose -f kroki-docker-compose.yml up
-
-# On Terminal 2, test if /seqdiag works
-curl http://localhost:8000/seqdiag/svg/eNorTi1MyUxMV6jmUlBIKsovL04tUtC1UyhPTQKyyoCc6JzEpNQcBVsFJXfXEAX9zLyU1Aq9jJLcHKVYayQ9Nrq6CE3WhA0L8A8GmpaUk5-un5yfm5uaVwIxD6EWqDElsSQxKbE4FUmfp1-wa1CIAg49IFfANOFxXS0A68hQUg==
-....
-
-==== to uninstall
-
-[shell]
-....
-docker-compose -f kroki-docker-compose.yml down
-....
-
 == Using kubernetes
 
-==== To install Kroki on default namespace
+To install Kroki on default namespace and start kroki service inside kubernetes at service port 8000
 
 [shell]
 ....
 kubectl apply -f docs/modules/setup/examples/k8s/
 ....
 
-==== To test the installation is successful
+healthy pod sample output will looks like
+
+[shell]
+...
+kubectl get pod
+NAME                          READY   STATUS    RESTARTS   AGE
+blockdiag-7bd6c989b7-zhvj8    1/1     Running   0          24s
+bpmn-6cfccf9bc4-6w4px         1/1     Running   0          24s
+excalidraw-5b84995fcb-dh57t   1/1     Running   0          24s
+kroki-6b49bcb7c4-x2ksc        1/1     Running   0          23s
+mermaid-7bff5c9959-hkrxx      1/1     Running   0          22s
+...
+
+To test the installation is successful
 
 [shell]
 ....
@@ -99,7 +92,7 @@ kubectl port-forward service/kroki 8000:8000
 curl http://localhost:8000/seqdiag/svg/eNorTi1MyUxMV6jmUlBIKsovL04tUtC1UyhPTQKyyoCc6JzEpNQcBVsFJXfXEAX9zLyU1Aq9jJLcHKVYayQ9Nrq6CE3WhA0L8A8GmpaUk5-un5yfm5uaVwIxD6EWqDElsSQxKbE4FUmfp1-wa1CIAg49IFfANOFxXS0A68hQUg==
 ....
 
-==== Uninstall on kubernetes (default namespace)
+Uninstall on kubernetes on default namespace
 
 [shell]
 ....
