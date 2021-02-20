@@ -59,6 +59,33 @@ Finally, to start a container in detached mode, you use `-d` option:
 [source,docker-cli]
 docker run -p8080:8000 -d yuzutech/kroki
 
+== Using kubernetes
+
+[source,shell]
+---
+# To install Kroki on default namespace
+kubectl apply -f docs/modules/setup/examples/k8s/
+
+# To install Kroki on kroki namespace
+kubectl create ns/kroki
+kubectl apply -n kroki -f docs/modules/setup/examples/k8s/
+
+# On Terminal 1, local port forward it to test the service is running
+kubectl port-forward service/kroki 8000:8000
+
+# On Terminal 2, test if /seqdiag works
+curl http://localhost:8000/seqdiag/svg/eNorTi1MyUxMV6jmUlBIKsovL04tUtC1UyhPTQKyyoCc6JzEpNQcBVsFJXfXEAX9zLyU1Aq9jJLcHKVYayQ9Nrq6CE3WhA0L8A8GmpaUk5-un5yfm5uaVwIxD6EWqDElsSQxKbE4FUmfp1-wa1CIAg49IFfANOFxXS0A68hQUg==
+---
+
+Optional to create an kubernetes ingress. Alternatively use loadbalancer on your existing service.
+
+==== Sample kubernetes ingress yaml
+
+[source,yaml]
+----
+include::example$k8s$kroki-ingress.yaml[]
+---
+
 === Images
 
 {uri-docker-kroki-image}[yuzutech/kroki] image contains the following diagrams libraries out-of-the-box:
