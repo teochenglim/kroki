@@ -85,6 +85,20 @@ kubectl port-forward service/kroki 8000:8000
 curl http://localhost:8000/seqdiag/svg/eNorTi1MyUxMV6jmUlBIKsovL04tUtC1UyhPTQKyyoCc6JzEpNQcBVsFJXfXEAX9zLyU1Aq9jJLcHKVYayQ9Nrq6CE3WhA0L8A8GmpaUk5-un5yfm5uaVwIxD6EWqDElsSQxKbE4FUmfp1-wa1CIAg49IFfANOFxXS0A68hQUg==
 ....
 
+==== Uninstall on kubernetes (Default namespace)
+
+[shell]
+....
+kubectl delete -f docs/modules/setup/examples/k8s/
+....
+
+==== Uninstall on kubernetes (Kroki namespace)
+
+[shell]
+....
+kubectl delete -n kroki -f docs/modules/setup/examples/k8s/
+....
+
 === Images
 
 {uri-docker-kroki-image}[yuzutech/kroki] image contains the following diagrams libraries out-of-the-box:
