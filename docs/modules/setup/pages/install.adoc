@@ -59,16 +59,32 @@ Finally, to start a container in detached mode, you use `-d` option:
 [source,docker-cli]
 docker run -p8080:8000 -d yuzutech/kroki
 
+== Using docker-compose
+
+You can use `docker-compose` to run multiple containers.
+Here's an example where we start all the containers:
+
+.docker-compose.yml
+[source,yml]
+----
+include::example$kroki-docker-compose.yml[]
+----
+
+[source,docker-cli]
+docker-compose up -d
+
 == Using kubernetes
 
-To install Kroki on default namespace and start kroki service inside kubernetes at service port 8000
+To install Kroki on default namespace and start kroki service inside kubernetes at service port 8000. Running command below will create multiple kubernetes object inside the folder.
+
+To allow external access to your kroki kubernetes internal service you will need to custom your ingress depends on your installation. You can use ingress, service node port, service load balancer and so on methods
 
 [shell]
 ....
 kubectl apply -f docs/modules/setup/examples/k8s/
 ....
 
-healthy pod sample output will looks like
+successful installation and healthy pod sample output will looks like
 
 [shell]
 ....
@@ -81,7 +97,7 @@ kroki-6b49bcb7c4-x2ksc        1/1     Running   0          23s
 mermaid-7bff5c9959-hkrxx      1/1     Running   0          22s
 ....
 
-To test the installation is successful
+To test the kroki service is running
 
 [shell]
 ....
@@ -154,15 +170,3 @@ Provides BPMN diagrams for Kroki using {uri-bpmn}[bpmn-js^].
 
 {uri-docker-kroki-excalidraw-image}[yuzutech/kroki-excalidraw^]::
 Provides BPMN diagrams for Kroki using {uri-excalidraw}[Excalidraw^].
-
-You can use `docker-compose` to run multiple containers.
-Here's an example where we start all the containers:
-
-.docker-compose.yml
-[source,yml]
-----
-include::example$kroki-docker-compose.yml[]
-----
-
-[source,docker-cli]
-docker-compose up -d
