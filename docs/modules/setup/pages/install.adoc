@@ -81,8 +81,27 @@ To allow external access to your kroki kubernetes internal service you will need
 
 [shell]
 ....
+git clone https://github.com/yuzutech/kroki
+cd kroki
 kubectl apply -f docs/modules/setup/examples/k8s/
 ....
+
+or install directly using github link
+
+[shell]
+....
+kubectl apply -f https://raw.githubusercontent.com/yuzutech/kroki/master/docs/modules/setup/examples/k8s/blockdiag-deployment.yaml
+kubectl apply -f https://raw.githubusercontent.com/yuzutech/kroki/master/docs/modules/setup/examples/k8s/blockdiag-service.yaml
+kubectl apply -f https://raw.githubusercontent.com/yuzutech/kroki/master/docs/modules/setup/examples/k8s/bpmn-deployment.yaml
+kubectl apply -f https://raw.githubusercontent.com/yuzutech/kroki/master/docs/modules/setup/examples/k8s/bpmn-service.yaml
+kubectl apply -f https://raw.githubusercontent.com/yuzutech/kroki/master/docs/modules/setup/examples/k8s/excalidraw-deployment.yaml
+kubectl apply -f https://raw.githubusercontent.com/yuzutech/kroki/master/docs/modules/setup/examples/k8s/kroki-deployment.yaml
+kubectl apply -f https://raw.githubusercontent.com/yuzutech/kroki/master/docs/modules/setup/examples/k8s/kroki-ingress.yaml
+kubectl apply -f https://raw.githubusercontent.com/yuzutech/kroki/master/docs/modules/setup/examples/k8s/kroki-service.yaml
+kubectl apply -f https://raw.githubusercontent.com/yuzutech/kroki/master/docs/modules/setup/examples/k8s/mermaid-deployment.yaml
+kubectl apply -f https://raw.githubusercontent.com/yuzutech/kroki/master/docs/modules/setup/examples/k8s/mermaid-service.yaml
+....
+
 
 successful installation and healthy pod sample output will looks like
 
