@@ -14,9 +14,9 @@
   "author": "Guillaume Grossetie",
   "license": "MIT",
   "dependencies": {
-    "mermaid": "8.9.0",
+    "mermaid": "8.9.1",
     "micro": "9.3.4",
-    "puppeteer": "5.5.0"
+    "puppeteer": "7.1.0"
   },
   "devDependencies": {
     "standard": "16.0.3"
