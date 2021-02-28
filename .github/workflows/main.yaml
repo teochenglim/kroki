@@ -4,69 +4,40 @@ on:
   push:
     branches:
       - master
-  pull_request:
-    branches:
-      - '*'
-
 jobs:
-  test-blockdiag:
+  test-kind:
     runs-on: ubuntu-18.04
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Install python 3.8.1
-      uses: gabrielfalcao/pyenv-action@v6
-      with:
-        # we cannot use 3.8.6 because pyenv 1.2.18 does not have the "definition" of this version,
-        # and thus cannot install it!
-        # see: https://github.com/gabrielfalcao/pyenv-action/pull/100
-        default: 3.8.1
-        command: pip install -U pip  # upgrade pip after installing python
-      env:
-        # allow unsecure commands add-path and set-env until v7 is available
-        # see: https://github.com/gabrielfalcao/pyenv-action/issues/99
-        ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+      - uses: actions/checkout@v2
+      - name: Install Kubernetes Kind
+        run: |
+          curl -Lo ./kind "https://kind.sigs.k8s.io/dl/v0.10.0/kind-$(uname)-amd64"
+          chmod +x ./kind
+      - name: Install kubectl
+        run: |
+          curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+          chmod +x ./kubectl
+      - name: Create cluster
+        run: ./kind create cluster
 
-    - name: Create virtualenv for python 3.8.1
-      run: pyenv local 3.8.1
+      - name: Install Kroki
+        run: ./kubectl apply -f docs/modules/setup/examples/k8s
 
-    - name: Install BlockDiag
-      run: make installBlockDiag
+      - name: Wait until available
+        run: ./kubectl wait --for=condition=available --timeout=120s --all deployments
 
-    - name: Test BlockDiag
-      run: make testBlockDiag
+      - name: Check pod
+        run: ./kubectl get pod
 
-  test-containers:
-    runs-on: ubuntu-18.04
+      - name: Forward port 8000 (background)
+        run: ./kubectl port-forward service/kroki 8000:8000 &
 
-    steps:
-    - uses: actions/checkout@v2
+      - name: Test SeqDiag
+        run: curl -o /dev/null -s -w "%{http_code}\n" http://localhost:8000/seqdiag/svg/eNorTi1MyUxMV6jmUlBIKsovL04tUtC1UyhPTQKyyoCc6JzEpNQcBVsFJXfXEAX9zLyU1Aq9jJLcHKVYayQ9Nrq6CE3WhA0L8A8GmpaUk5-un5yfm5uaVwIxD6EWqDElsSQxKbE4FUmfp1-wa1CIAg49IFfANOFxXS0A68hQUg== | grep 200
 
-    - name: Set up JDK 11
-      uses: actions/setup-java@v1
-      with:
-        java-version: 11
+      - name: Uninstall Kroki
+        run: ./kubectl delete -f docs/modules/setup/examples/k8s
 
-    - name: Install Java dependencies
-      run: make installLocalDependencies
-
-    - name: Build Java server
-      run: make buildServer
-
-    - name: Setup Docker
-      # taken from https://github.com/docker/github-actions/blob/0f18e2abad9a4ac2963d2516246787375b5ec917/Dockerfile#L32
-      run: curl -fL https://download.docker.com/linux/static/stable/x86_64/docker-19.03.8.tgz | tar xzO docker/docker > docker && sudo mv -f docker /usr/bin/docker && sudo chmod +x /usr/bin/docker
-
-    - name: Build container images
-      run: make buildDockerImages
-
-    - name: 'Setup Node.js 12'
-      uses: actions/setup-node@v1
-      with:
-        node-version: 12.x
-
-    - name: Install Node dependencies
-      run: npm install
-
-    - name: Run smoke tests
-      run: make smokeTests
+      - name: Delete cluster
+        run: ./kind delete cluster
