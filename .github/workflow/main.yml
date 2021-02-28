@@ -4,21 +4,6 @@ on:
   push:
     branches:
       - master
-  pull_request:
-    branches:
-      - '*'
-
-jobs:
-name: Docs CI
-
-on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - '*'
-
 jobs:
   test-kind:
     runs-on: ubuntu-18.04
